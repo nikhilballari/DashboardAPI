@@ -1,0 +1,11 @@
+# Curl Command for adding a new Dashboard record
+curl --location 'http://localhost:8080/dashboards' \
+--header 'Content-Type: application/json' \
+--data '{
+	"createdAt": "03/03/2024",
+    "updatedAt": "10/03/2024",
+    "title": "check availability status"
+}'
+
+#Curl Command to get all Dashboard records
+curl --location 'http://localhost:8080/dashboards'

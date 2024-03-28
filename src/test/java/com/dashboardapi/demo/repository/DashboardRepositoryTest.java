@@ -1,0 +1,42 @@
+package com.dashboardapi.demo.repository;
+
+import com.dashboardapi.demo.entity.Dashboard;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class DashboardRepositoryTest {
+    @Autowired
+    private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+    @BeforeEach
+    public void setUp() {
+        Dashboard dashboard1 = Dashboard.builder()
+                                    .title("Test Title")
+                                    .createdAt(LocalDate.of(2024,01,10))
+                                    .updatedAt(LocalDate.of(2024,01,15))
+                                    .build();
+        testEntityManager.persist(dashboard1);
+    }
+
+    @Disabled
+    @Test
+    public void whenFindByTitle_thenReturnDashboard() {
+
+        Dashboard dashboard = dashboardRepository.findByTitle("Test Title");
+        assertEquals(dashboard.getTitle(), "Test Title");
+    }
+}

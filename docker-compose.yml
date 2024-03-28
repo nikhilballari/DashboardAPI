@@ -1,0 +1,36 @@
+version: "3.5"
+
+services:
+  mysql-db:
+    image: mysql:5
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: test123
+      MYSQL_DATABASE: definitions
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -ptest123 -e 'select 1'"]
+      interval: 5s
+      retries: 50
+
+  api:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+      - "443:443"
+
+  dashboard-api:
+    image: dashboard-api-image
+    container_name: dashboard-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/definitions?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: test123
+    depends_on:
+      - mysql-db
