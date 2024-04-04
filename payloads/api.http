@@ -2,9 +2,9 @@
 curl --location 'http://localhost:8080/dashboards' \
 --header 'Content-Type: application/json' \
 --data '{
-	"createdAt": "03/03/2024",
-    "updatedAt": "10/03/2024",
-    "title": "check availability status"
+	"createdAt": "2022-01-01 12:25:30",
+    "updatedAt": "2022-01-01 16:25:30",
+    "title": "check running status"
 }'
 
 #Curl Command to get all Dashboard records

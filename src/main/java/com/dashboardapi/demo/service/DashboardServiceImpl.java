@@ -19,6 +19,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * This method fetches all the dashboard records  from the backend database table
+     *
      * @return List of dashboard records upon successful retrieval from the database
      */
     @Override
@@ -29,6 +30,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * This method inserts a new record in the backend database table
+     *
      * @return dashboard record upon successful insertion in the database
      */
     @Override

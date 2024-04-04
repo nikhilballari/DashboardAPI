@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,10 +25,10 @@ public class DashboardRepositoryTest {
     @BeforeEach
     public void setUp() {
         Dashboard dashboard1 = Dashboard.builder()
-                                    .title("Test Title")
-                                    .createdAt(LocalDate.of(2024,01,10))
-                                    .updatedAt(LocalDate.of(2024,01,15))
-                                    .build();
+                .title("Test Title")
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
+                .build();
         testEntityManager.persist(dashboard1);
     }
 

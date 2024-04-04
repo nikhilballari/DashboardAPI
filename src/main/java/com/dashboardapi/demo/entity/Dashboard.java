@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Entity class that represents the table from the database
@@ -24,17 +24,17 @@ public class Dashboard {
     private Long id;
     @Column(
             name = "created_date",
-            columnDefinition = "DATE",
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             nullable = false
     )
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
     @Column(
             name = "updated_date",
-            columnDefinition = "DATE",
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             nullable = false
     )
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate updatedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
     private String title;
 }

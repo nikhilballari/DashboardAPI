@@ -10,6 +10,7 @@ public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
 
     /**
      * This method fetches the dashboard information from the backend table for the requested title
+     *
      * @return dashboard record upon successful retrieval from the database
      */
     Dashboard findByTitle(String Title);

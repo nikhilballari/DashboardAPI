@@ -21,6 +21,7 @@ public class DashboardController {
 
     /**
      * Controller Endpoint to fetch dashboard information from database
+     *
      * @return list of dashboards in the form of JSON response
      */
     @GetMapping("/dashboards")
@@ -31,6 +32,7 @@ public class DashboardController {
 
     /**
      * Controller Endpoint to add a new dashboard information into database
+     *
      * @return dashboard record upon successful insertion in the database
      */
     @PostMapping("/dashboards")

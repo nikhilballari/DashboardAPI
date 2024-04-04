@@ -3,7 +3,6 @@ package com.dashboardapi.demo.service;
 import com.dashboardapi.demo.entity.Dashboard;
 import com.dashboardapi.demo.repository.DashboardRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +30,18 @@ public class DashboardServiceTest {
     @DisplayName("Get all Dashboards from the database")
     public void whenDashboardsExist_thenReturnAllDashboards() {
         Dashboard dashboard1 = Dashboard.builder()
-                .id(5L)
                 .title("Test Title 5")
-                .createdAt(LocalDate.of(2024,01,10))
-                .updatedAt(LocalDate.of(2024,01,15))
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
                 .build();
 
         Dashboard dashboard2 = Dashboard.builder()
-                .id(6L)
                 .title("Test Title 6")
-                .createdAt(LocalDate.of(2024,02,20))
-                .updatedAt(LocalDate.of(2024,03,23))
+                .createdAt(LocalDateTime.of(2024, 02, 20, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 03, 23, 18, 10, 15))
                 .build();
 
-        Mockito.when(dashboardRepository.findAll()).thenReturn(List.of(dashboard1,dashboard2));
+        Mockito.when(dashboardRepository.findAll()).thenReturn(List.of(dashboard1, dashboard2));
 
         List<Dashboard> dashboardList = dashboardService.getAllDashboards();
         assertEquals(dashboardList.stream().count(), 2);
@@ -69,8 +66,8 @@ public class DashboardServiceTest {
         Dashboard dashboard1 = Dashboard.builder()
                 .id(5L)
                 .title("Test Title 5")
-                .createdAt(LocalDate.of(2024,01,10))
-                .updatedAt(LocalDate.of(2024,01,15))
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
                 .build();
 
         Mockito.when(dashboardRepository.save(any())).thenReturn(dashboard1);
