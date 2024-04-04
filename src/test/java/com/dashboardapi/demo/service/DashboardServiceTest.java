@@ -64,7 +64,6 @@ public class DashboardServiceTest {
     @DisplayName("Add new Dashboard Record")
     public void whenNewRecordAdded_thenReturnSuccess() {
         Dashboard dashboard1 = Dashboard.builder()
-                .id(5L)
                 .title("Test Title 5")
                 .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
                 .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
