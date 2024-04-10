@@ -1,6 +1,7 @@
 package com.dashboardapi.demo.service;
 
 import com.dashboardapi.demo.entity.Dashboard;
+import com.dashboardapi.demo.error.ExistingDashboardTitleException;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface DashboardService {
 
     List<Dashboard> getAllDashboards();
 
-    Dashboard saveDashboard(Dashboard dashboard);
+    Dashboard saveDashboard(Dashboard dashboard) throws ExistingDashboardTitleException;
 }

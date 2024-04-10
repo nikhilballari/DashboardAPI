@@ -1,6 +1,7 @@
 package com.dashboardapi.demo.controller;
 
 import com.dashboardapi.demo.entity.Dashboard;
+import com.dashboardapi.demo.error.ExistingDashboardTitleException;
 import com.dashboardapi.demo.service.DashboardService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class DashboardController {
      * @return dashboard record upon successful insertion in the database
      */
     @PostMapping("/dashboards")
-    public Dashboard saveDashboard(@RequestBody @Valid Dashboard dashboard) {
+    public Dashboard saveDashboard(@RequestBody @Valid Dashboard dashboard) throws ExistingDashboardTitleException {
         log.info("Inside DashboardController.saveDashboard() method");
         return dashboardService.saveDashboard(dashboard);
     }

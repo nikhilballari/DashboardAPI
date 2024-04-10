@@ -1,6 +1,7 @@
 package com.dashboardapi.demo.service;
 
 import com.dashboardapi.demo.entity.Dashboard;
+import com.dashboardapi.demo.error.ExistingDashboardTitleException;
 import com.dashboardapi.demo.repository.DashboardRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
@@ -62,7 +62,7 @@ public class DashboardServiceTest {
 
     @Test
     @DisplayName("Add new Dashboard Record")
-    public void whenNewRecordAdded_thenReturnSuccess() {
+    public void whenNewRecordAdded_thenReturnSuccess() throws ExistingDashboardTitleException {
         Dashboard dashboard1 = Dashboard.builder()
                 .title("Test Title 5")
                 .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
@@ -74,5 +74,28 @@ public class DashboardServiceTest {
         Dashboard responseDashboard = dashboardService.saveDashboard(dashboard1);
         assertEquals(responseDashboard.getTitle(), dashboard1.getTitle());
         assertEquals(responseDashboard.getUpdatedAt(), dashboard1.getUpdatedAt());
+    }
+
+    @Test
+    @DisplayName("Test case when Dashboard with requested title already exists ")
+    public void whenExistingTitleName_thenReturnError() throws ExistingDashboardTitleException {
+        Dashboard dashboard1 = Dashboard.builder()
+                .title("Test Title 5")
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
+                .build();
+
+        Dashboard dashboard2 = Dashboard.builder()
+                .title("test_title")
+                .createdAt(LocalDateTime.of(2024, 02, 20, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 03, 23, 18, 10, 15))
+                .build();
+
+        Mockito.when(dashboardRepository.findAll()).thenReturn(List.of(dashboard1, dashboard2));
+        ExistingDashboardTitleException existingDashboardTitleException = assertThrows(ExistingDashboardTitleException.class,
+                () -> dashboardService.saveDashboard(dashboard1));
+
+       assertEquals(existingDashboardTitleException.getMessage(), "Dashboard with same title already present");
+
     }
 }
