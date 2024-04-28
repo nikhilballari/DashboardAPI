@@ -13,4 +13,6 @@ public interface DashboardService {
     List<Dashboard> getAllDashboards();
 
     Dashboard saveDashboard(Dashboard dashboard) throws ExistingDashboardTitleException;
+
+    Dashboard saveDashboardByCheckingTitle(Dashboard dashboard) throws ExistingDashboardTitleException;
 }

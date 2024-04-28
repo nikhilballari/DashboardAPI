@@ -41,4 +41,10 @@ public class DashboardController {
         log.info("Inside DashboardController.saveDashboard() method");
         return dashboardService.saveDashboard(dashboard);
     }
+
+    @PostMapping("/checkbytitle")
+    public Dashboard saveDashboardByCheckingTitle(@RequestBody @Valid Dashboard dashboard) throws ExistingDashboardTitleException {
+        log.info("Inside DashboardController.saveDashboardByCheckingTitle() method");
+        return dashboardService.saveDashboardByCheckingTitle(dashboard);
+    }
 }

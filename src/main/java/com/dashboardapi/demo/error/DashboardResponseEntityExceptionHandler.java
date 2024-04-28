@@ -11,9 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 @ResponseStatus
 public class DashboardResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(ExistingDashboardTitleException.class)
-    public ResponseEntity<ErrorMessage> existingDashboardTitleException(ExistingDashboardTitleException existingDashboardTitleException) {
+    public ResponseEntity<ErrorMessage> existingDashboardTitleException(ExistingDashboardTitleException
+                                                                                    existingDashboardTitleException) {
 
         ErrorMessage errorMessage = new ErrorMessage(HttpStatus.CONFLICT,
                                                     existingDashboardTitleException.getMessage(),

@@ -15,3 +15,11 @@ spring:
 management:
   tracing:
     enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+    health:
+      show-details: always
