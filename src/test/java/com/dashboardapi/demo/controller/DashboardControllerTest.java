@@ -1,6 +1,7 @@
 package com.dashboardapi.demo.controller;
 
 import com.dashboardapi.demo.entity.Dashboard;
+import com.dashboardapi.demo.error.ExistingDashboardTitleException;
 import com.dashboardapi.demo.service.DashboardService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -77,7 +79,7 @@ public class DashboardControllerTest {
 
     @Test
     @DisplayName("Return empty response when no data in the backend DB")
-    public void whenNoDataInDB_ThenReturnEmptyResponse() throws Exception {
+    public void whenNoDataInDB_thenReturnEmptyResponse() throws Exception {
         Mockito.when(dashboardService.getAllDashboards()).thenReturn(new ArrayList<>());
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/dashboards"))
@@ -92,7 +94,7 @@ public class DashboardControllerTest {
 
     @Test
     @DisplayName("Return successful response when new Dashboard is added")
-    public void whenNewDashboardAdded_ThenReturnSuccessfulResponse() throws Exception {
+    public void whenNewDashboardAdded_thenReturnSuccessfulResponse() throws Exception {
 
         Dashboard dashboard1 = Dashboard.builder()
                 .title("Test Title 5")
@@ -113,12 +115,38 @@ public class DashboardControllerTest {
         String responseContent = result.getResponse().getContentAsString();
         ObjectMapper responseMapper = new ObjectMapper();
         responseMapper.registerModule(new JavaTimeModule());
-        Dashboard responseDashboard = responseMapper.readValue(responseContent, new TypeReference<Dashboard>() {
-        });
+        Dashboard responseDashboard = responseMapper.readValue(responseContent, new TypeReference<Dashboard>() {});
 
         Assertions.assertEquals(dashboard1.getTitle(), responseDashboard.getTitle());
         Assertions.assertEquals(dashboard1.getCreatedAt(), responseDashboard.getCreatedAt());
         Assertions.assertEquals(dashboard1.getUpdatedAt(), responseDashboard.getUpdatedAt());
+    }
 
+    @Test
+    @DisplayName("Create a new Dashboard Record by checking for duplicate title")
+    public void whenCreateNewDashboardByCheckingTitle_thenReturnSuccessfulResponse() throws Exception {
+        Dashboard dashboard1 = Dashboard.builder()
+                .title("Test Title 5")
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
+                .build();
+
+        Mockito.when(dashboardService.saveDashboardByCheckingTitle(any())).thenReturn(dashboard1);
+        ObjectMapper requestMapper = new ObjectMapper();
+        requestMapper.registerModule(new JavaTimeModule());
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/checkbytitle")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestMapper.writeValueAsString(dashboard1)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+        String responseContent = result.getResponse().getContentAsString();
+        ObjectMapper responseMapper = new ObjectMapper();
+        responseMapper.registerModule(new JavaTimeModule());
+        Dashboard responseDashboard = responseMapper.readValue(responseContent, new TypeReference<Dashboard>() {});
+
+        Assertions.assertEquals(dashboard1.getTitle(), responseDashboard.getTitle());
+        Assertions.assertEquals(dashboard1.getCreatedAt(), responseDashboard.getCreatedAt());
+        Assertions.assertEquals(dashboard1.getUpdatedAt(), responseDashboard.getUpdatedAt());
     }
 }

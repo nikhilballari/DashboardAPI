@@ -53,6 +53,13 @@ public class DashboardServiceImpl implements DashboardService {
         return dashboardRepository.save(dashboard);
     }
 
+    /**
+     * This method inserts a new dashboard record by checking if the title already exists in the DB
+     *
+     * @param dashboard object record
+     * @return dashboard record upon successful insertion in the database
+     * @throws ExistingDashboardTitleException in case if a record with the title already exists in Backend DB
+     */
     @Override
     @Observed(name = "check.checkByTitle")
     public Dashboard saveDashboardByCheckingTitle(Dashboard dashboard) throws ExistingDashboardTitleException {

@@ -77,6 +77,34 @@ public class DashboardServiceTest {
     }
 
     @Test
+    @DisplayName("Create a new Dashboard for a new record")
+    public void whenCreateNewDashboardByCheckingTitleForNewRecord_thenReturnSuccess() throws ExistingDashboardTitleException {
+        Dashboard dashboard1 = Dashboard.builder()
+                .title("Test Title 5")
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
+                .build();
+        Mockito.when(dashboardRepository.findByTitle(any())).thenReturn(null);
+        Mockito.when(dashboardRepository.save(any())).thenReturn(dashboard1);
+
+        Dashboard responseDashboard = dashboardService.saveDashboardByCheckingTitle(dashboard1);
+    }
+
+    @Test
+    @DisplayName("Create a new Dashboard for a an existing title record")
+    public void whenCreateNewDashboardByCheckingTitleAlreadyExists_thenReturnError() {
+        Dashboard dashboard1 = Dashboard.builder()
+                .title("Test Title 5")
+                .createdAt(LocalDateTime.of(2024, 01, 10, 18, 10, 15))
+                .updatedAt(LocalDateTime.of(2024, 01, 15, 18, 10, 15))
+                .build();
+        Mockito.when(dashboardRepository.findByTitle(any())).thenReturn(dashboard1);
+        ExistingDashboardTitleException existingDashboardTitleException = assertThrows(ExistingDashboardTitleException.class,
+                () -> dashboardService.saveDashboardByCheckingTitle(dashboard1));
+        assertEquals(existingDashboardTitleException.getMessage(), "Dashboard with same title already present");
+    }
+
+    @Test
     @DisplayName("Test case when Dashboard with requested title already exists ")
     public void whenExistingTitleName_thenReturnError() throws ExistingDashboardTitleException {
         Dashboard dashboard1 = Dashboard.builder()
